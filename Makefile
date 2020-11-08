@@ -18,7 +18,7 @@ BFS: $(LIBS) $(BFS).cpp
 AST: $(LIBS) $(AST).cpp
 	$(CC) $(STD) -o $(AST) $(AST).cpp $(LIBS)
 
-Test: $(OBJ) $(BFS).o $(AST).o
+Test: $(LIBS) $(BFS).cpp $(AST).cpp
 	$(CC) $(STD) -D TESTING -o $(BFS) $(BFS).cpp $(LIBS)
 	$(CC) $(STD) -D TESTING -o $(AST) $(AST).cpp $(LIBS)
 	@echo ""
