@@ -13,6 +13,7 @@
 #include <map>
 #include <queue>
 #include <stack>
+#include <limits>
 #include <cmath>
 #include "MarsMap.hh"
 
@@ -26,12 +27,13 @@ typedef struct Node {
     float       cost;
     MarsPlace   *location;
     struct Node *parent;
+    int         samples;
 }Node;
 
 // Comparator for priority queue based on Node.priority
 struct node_comparator {
-    bool operator()(const Node *a, const Node *b) {
-        return a->priority < b->priority;
+    bool operator()(const Node *a, const Node *b) const {
+        return a->priority > b->priority;
     }
 };
 
@@ -42,25 +44,13 @@ class History {
 public:
     // Tree of search moves takes
     Node *path;
-    // Reports if a node has been previously visited and expanded
-    bool observed(Node *loc);
-    // Updates path to reflect most recent node visited, adds node to path tree
-    void update_history(Node *loc);
-    // Updates the contents of frontier
-    inline void update_frontier(Node *loc) {if(!observed(loc)) seen.insert(
-                                    {string(loc->location->name()), loc});};
-    // Reports the number of samples collected so far, 3 implies they're all collected
-    inline int samples(){return sample_set.size();};
+    // Counts number of samples in a until three is reached
+    static int check_samples(Node *sample);
 
 // Private class members and functions
 private:
     // Stores current state of the frontier
-    multimap<string, Node *> seen;
-    // Set of collected samples
-    unordered_set<int> sample_set;
-    // Helper function to quickly verify if a sample exists without
-    // accessing member of Node
-    bool check_samples(Node *sample);
+    multimap<string, string> seen;
 };
 
 // Abstract superclass implementation for use in both search algorithms
@@ -93,7 +83,7 @@ public:
     // Reports the results from the entire run to console
     void rover_report(bool state) const;
     // Returns the cost between child and parent node
-    float get_cost(Node *root, Node *child);
+    static float get_cost(Node *root, Node *child);
 
 // Private class members and objects
 private:

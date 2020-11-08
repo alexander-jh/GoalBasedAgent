@@ -39,6 +39,7 @@ $(MT).o: $(MT).cpp $(MT).hpp $(AST).cpp $(BFS).cpp
 Test: $(OBJ) $(BFS).o $(AST).o
 	$(CC) $(STD) $(OBJ) $(BFS).o -o $(BFS)
 	$(CC) $(STD) $(OBJ) $(AST).o -o $(AST)
+	@echo ""
 	./$(BFS) -s A Testing/hw2-data1.txt
 	@echo ""
 	./$(BFS) -s B Testing/hw2-data1.txt
@@ -66,6 +67,7 @@ Test: $(OBJ) $(BFS).o $(AST).o
 	./$(AST) -s F Testing/hw2-data1.txt
 	@echo ""
 	./$(AST) -s base Testing/hw2-data1.txt
+	@echo ""
 	make clean
 
 clean:
