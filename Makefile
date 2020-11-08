@@ -6,39 +6,21 @@
 
 CC		= g++
 STD		= -std=c++11
-MT   	= MarsTraveller
-MM      = MarsMap
-OBJ		= MarsMap.o MarsTraveller.o
+LIBS   	= MarsTraveller.hpp MarsTraveller.cpp MarsMap.hh MarsMap.cc
 BFS		= BFSMarsTraveller
 AST		= AStarMarsTraveller
-CATCH	= Testing/catch.hpp
-TEST   	= MarsTravellerUnitTesting
 
 all: BFS AST
 
-BFS: $(OBJ) $(BFS).o
-	$(CC) $(STD) $(OBJ) $(BFS).o -o $(BFS)
-	rm -rf *.o
+BFS: $(LIBS) $(BFS).cpp
+	$(CC) $(STD) -o $(BFS) $(BFS).cpp $(LIBS)
 
-AST: $(OBJ) $(AST).o
-	$(CC) $(STD) $(OBJ) $(AST).o -o $(AST)
-	rm -rf *.o
-
-$(BFS).o: $(BFS).cpp $(MT).hpp
-	$(CC) $(STD) -c $(BFS).cpp
-
-$(AST).o: $(AST).cpp $(MT).hpp
-	$(CC) $(STD) -c $(AST).cpp
-
-$(MM).o: $(MM).cc $(MM).hh $(MT).hpp $(MT).cpp
-	$(CC) $(STD) -c $(MM).cc
-
-$(MT).o: $(MT).cpp $(MT).hpp $(AST).cpp $(BFS).cpp
-	$(CC) $(STD) -c $(MT).cpp
+AST: $(LIBS) $(AST).cpp
+	$(CC) $(STD) -o $(AST) $(AST).cpp $(LIBS)
 
 Test: $(OBJ) $(BFS).o $(AST).o
-	$(CC) $(STD) $(OBJ) $(BFS).o -o $(BFS)
-	$(CC) $(STD) $(OBJ) $(AST).o -o $(AST)
+	$(CC) $(STD) -D TESTING -o $(BFS) $(BFS).cpp $(LIBS)
+	$(CC) $(STD) -D TESTING -o $(AST) $(AST).cpp $(LIBS)
 	@echo ""
 	./$(BFS) -s A Testing/hw2-data1.txt
 	@echo ""

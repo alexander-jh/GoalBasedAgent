@@ -77,8 +77,10 @@ bool MarsTraveller::run_rover() {
         read_children(root);
         // Check goal state
         goal_met = goal_test(root);
+#ifndef TESTING
         // Print the next state
         printf("Current Node: %s\t\tNext State: %s\n", root->location->name(), front());
+#endif
     }
     // If goal state achieved build solution path
     if(goal_met) build_solution(root);
