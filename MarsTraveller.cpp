@@ -122,6 +122,7 @@ void MarsTraveller::read_children(Node *root) {
         child->cost = root->cost + get_cost(root, child);
         // Updates priority as depth for BFS and f(n) for A*
         update_priority(root, child);
+        insert(child);
     }
 }
 
